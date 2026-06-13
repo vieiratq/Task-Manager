@@ -1,0 +1,34 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    font-family: 'Montserrat', sans-serif;
+}
+main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(149, 170, 173);
+    height: 100vh;
+    width: 100vw;
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(181, 216, 216);
+    border-radius: 15px;
+    padding: 20px;
+}
+.logincase{
+    display: flex;
+    flex-direction:column;
+}
+.form1{
+    display: flex;
+    flex-direction: column;
+}
+span{
+    color: red
+}
