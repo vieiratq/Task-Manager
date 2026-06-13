@@ -1,10 +1,16 @@
 const express = require("express");
 const path = require("path");
-const sqlite3 = require("sqlite3").verbose()
 const app = express();
 const port = 3000;
-const db = new sqlite3.Database("./backend/database/Bancodedados.db")
 const session = require("express-session");
+const { Pool } = require("pg");
+const db = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
+
 ////////////////////////////////////////////////////////////////////////
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "private")));
@@ -36,8 +42,8 @@ app.get("/register", (req, res) => {
 
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
-  db.get("SELECT id, username, email FROM users WHERE email = ? AND password = ?", [email, password],
-    (err, user) => {
+  db.query("SELECT id, username, email FROM users WHERE email = $1 AND password = $2", [email, password],
+    (err, result) => {
       if (err)
         return res.json({ success: false, message: "Erro no login" })
       if (!user)
@@ -59,14 +65,14 @@ app.post("/login", (req, res) => {
 
 app.post("/register", (req, res) => {
   const { username, email, password } = req.body;
-  db.get("SELECT username, email FROM users WHERE username = ? OR email = ?", [username, email], (err, user) => {
+  db.query("SELECT username, email FROM users WHERE username = $1 OR email = $2", [username, email], (err, result) => {
     if (err)
       return res.json({ success: false, message: "erro ao buscar dados" })
     if (user && user.email === email)
       return res.json({ success: false, message: "Email ja cadastrato, use outro email" })
     if (user && user.username === username)
       return res.json({ success: false, message: "username ja cadastrato, use outro username" })
-    db.run("INSERT INTO users(username,email,password) VALUES(?,?,?)", [req.body.username, req.body.email, req.body.password], (err) => {
+    db.query("INSERT INTO users(username,email,password) VALUES($1,$2,$3)", [req.body.username, req.body.email, req.body.password], (err) => {
       if (err)
         return res.json({ success: false, message: "erro ao cadastrar" })
       return res.json({ success: true, message: "usuario cadastrado" })
