@@ -44,6 +44,7 @@ app.post("/login", (req, res) => {
   const { email, password } = req.body;
   db.query("SELECT id, username, email FROM users WHERE email = $1 AND password = $2", [email, password],
     (err, result) => {
+
       if (err)
         return res.json({ success: false, message: "Erro no login" })
       const user = result.rows[0]
@@ -66,6 +67,13 @@ app.post("/login", (req, res) => {
 
 app.post("/register", (req, res) => {
   const { username, email, password } = req.body;
+  if (!checktamanho(username, 3, 20))
+    return res.json({ success: false, message: "username deve conter entre 3 e 20 caracteres" })
+  if (!checktamanho(password, 6, 50))
+    return res.json({ success: false, message: "password deve conter entre 6 e 50 caracteres" })
+  if (!checktamanho(email, 5, 50))
+    return res.json({ success: false, message: "email deve conter entre 5 e 50 caracteres" })
+
   db.query("SELECT username, email FROM users WHERE username = $1 OR email = $2", [username, email], (err, result) => {
     if (err)
       return res.json({ success: false, message: "erro ao buscar dados" })
@@ -94,4 +102,10 @@ function ValidaLogin(req, res, next) {
     return next()
   else
     res.redirect("/")
+}
+function checktamanho(item, min, max) {
+  if (item.length < min || item.length > max)
+    return false
+  else
+    return true
 }
