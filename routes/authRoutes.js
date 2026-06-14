@@ -22,7 +22,7 @@ router.post("/register", (req, res) => {
     return res.json({ success: false, message: "username deve conter entre 3 e 20 caracteres" })
   if (!checktamanho(password, 6, 18))
     return res.json({ success: false, message: "password deve conter entre 6 e 50 caracteres" })
-  if (!checktamanho(email, 5, 25))
+  if (!checktamanho(email, 5, 50))
     return res.json({ success: false, message: "email deve conter entre 5 e 50 caracteres" })
 
   db.query("SELECT username, email FROM users WHERE username = $1 OR email = $2", [username, email], (err, result) => {
