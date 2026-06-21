@@ -5,13 +5,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard</title>
-    <link rel="stylesheet" href="dash.css" />
+    <link rel="stylesheet" href="../public/dash.css" />
 </head>
 
 <body>
     <header>
         <h1>Dashboard</h1>
-        <h2>level: <span id="level" > loading...</span></h2>
+        <h2>level: <span id="level"> loading...</span></h2>
         <a class="logout" href="/logout">Logout</a>
     </header>
 
@@ -35,20 +35,42 @@
 
         <section class="section">
             <h2>Post a new task</h2>
-
+            <span id="taskmsg"></span>
             <form id="taskForm">
                 <input type="text" id="taskTitle" placeholder="Task title" required />
 
                 <textarea id="taskDescription" placeholder="Task description" rows="4"></textarea>
 
-                <button type="submit">Post Task</button>
+                <button id="submit1" type="submit">Post Task</button>
             </form>
         </section>
 
         <section class="section">
-            <h2>Posted tasks</h2>
+            <div class="tasks1">
+                <h2 id="postedtask" >Posted tasks</h2>
+                <button id="atualizar">atualizar</button>
+            </div>
             <div id="tasksList">
-                <p class="empty">Loading tasks...</p>
+                <div class="task">
+                    <h3 class="task-title">Task 1</h3>
+                    <p class="task-desc">Description of task 1</p>
+                </div>
+                <div class="task">
+                    <h3 class="task-title">Task 1</h3>
+                    <p class="task-desc">Description of task 1</p>
+                </div>
+                <div class="task">
+                    <h3 class="task-title">Task 1</h3>
+                    <p class="task-desc">Description of task 1</p>
+                </div>
+                <div class="task">
+                    <h3 class="task-title">Task 1</h3>
+                    <p class="task-desc">Description of task 1</p>
+                </div>
+                <div class="task">
+                    <h3 class="task-title">Task 1</h3>
+                    <p class="task-desc">Description of task 1</p>
+                </div>
             </div>
         </section>
     </main>

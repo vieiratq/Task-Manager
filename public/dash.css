@@ -108,6 +108,34 @@ button:hover {
     color: #777;
 }
 
+.tasks1 {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    gap: 12px;
+}
+
+#atualizar {
+    display: flex;
+    font-size: 20px;
+    align-items: center;
+    justify-content: center;
+    height: auto;
+    width: auto;
+    padding: 10px 18px;
+    background-color: #0b824b;
+}
+#tasklist{
+    display: flex;
+    flex-direction:row;
+    gap: 12px;
+}
+.task{
+    display: flex;
+    flex-direction: column;
+    
+}
+
 @media (max-width: 700px) {
     .cards {
         grid-template-columns: 1fr;

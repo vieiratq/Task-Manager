@@ -3,26 +3,19 @@ const express = require("express");
 const path = require("path");
 const db = require("./databaseroutes");
 const router = express.Router();
+const checktamanho = require("../function/checktamanho")
 function ValidaLogin(req, res, next) {
   if (req.session.user)
     return next()
   else
     res.redirect("/")
 }
-function checktamanho(item, min, max) {
-  if (item.length < min || item.length > max)
-    return false
-  else
-    return true
-}
-
-
 router.post("/register", (req, res) => {
   const { username, email, password } = req.body;
   if (!checktamanho(username, 5, 20))
-    return res.json({ success: false, message: "username deve conter entre 3 e 20 caracteres" })
-  if (!checktamanho(password, 6, 18))
-    return res.json({ success: false, message: "password deve conter entre 6 e 50 caracteres" })
+    return res.json({ success: false, message: "username deve conter entre 5 e 20 caracteres" })
+  if (!checktamanho(password, 6, 25))
+    return res.json({ success: false, message: "password deve conter entre 6 e 25 caracteres" })
   if (!checktamanho(email, 5, 50))
     return res.json({ success: false, message: "email deve conter entre 5 e 50 caracteres" })
 
@@ -50,13 +43,13 @@ router.post("/register", (req, res) => {
 router.post("/login", (req, res) => {
   const { email, password } = req.body;
   db.query("SELECT id, username, email, password FROM users WHERE email = $1", [email],
-    async(err, result) => {
+    async (err, result) => {
 
       if (err)
         return res.json({ success: false, message: "Erro no login" })
       const user = result.rows[0]
-      if(!user)
-        return res.json({ success: false , message : "email ou senha incorreto", error:"222"})
+      if (!user)
+        return res.json({ success: false, message: "email ou senha incorreto", error: "222" })
       const loginCheck = await bcrypt.compare(password, user.password)
       if (!loginCheck)
         return res.json({ success: false, message: "Email ou senha incorreto" })
