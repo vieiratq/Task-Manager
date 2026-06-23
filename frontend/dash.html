@@ -10,55 +10,77 @@
 </head>
 
 <body>
-    <header>
-        <h1>Dashboard</h1>
-        <h2>level: <span id="level"> loading... <i class="fa-solid fa-spinner fa-spin-pulse"></i> </span></h2>
-        <a class="logout" href="/logout">Logout</a>
+    <header class="topbar">
+        <div class="brand">
+            <span class="brand-mark">T</span>
+            <h1>Tarefas</h1>
+        </div>
+
+        <div class="topbar-actions">
+            <p class="level-badge">Nivel <span id="level">loading...</span></p>
+            <a class="logout" href="/logout">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <span>Sair</span>
+            </a>
+        </div>
     </header>
 
     <main class="container">
         <section class="cards">
             <div class="card">
-                Username
-                <span id="username">Loading... <i class="fa-solid fa-spinner fa-spin-pulse"></i></span>
+                <span class="card-label">Usuario</span>
+                <strong id="username">Loading...</strong>
             </div>
 
             <div class="card">
-                User ID
-                <span id="userId">Loading... <i class="fa-solid fa-spinner fa-spin-pulse"></i></span>
+                <span class="card-label">User ID</span>
+                <strong id="userId">Loading...</strong>
             </div>
 
             <div class="card">
-                Plan
-                <span id="plan">Loading... <i class="fa-solid fa-spinner fa-spin-pulse"></i></span>
+                <span class="card-label">Plano</span>
+                <strong id="plan">Loading...</strong>
             </div>
         </section>
 
-        <section class="section">
-            <h2>Post a new task</h2>
-            <span id="taskmsg"></span>
-            <form id="taskForm">
-                <input type="text" id="taskTitle" placeholder="Task title" required />
-
-                <textarea id="taskDescription" placeholder="Task description" rows="4"></textarea>
-
-                <button id="submit1" type="submit">Post Task</button>
-            </form>
-        </section>
-
-        <section class="section">
-            <div class="tasks1">
-                <h2 id="postedtask">Posted tasks</h2>
-                <button id="atualizar">atualizar</button>
-            </div>
-            <div id="tasksList">
-                <div class="task">
-                    <h3 class="task-title">Loading... </h3>
-                    <p class="task-desc">Loading...</p>
+        <div class="workspace">
+            <section class="section task-form-panel">
+                <div class="section-head">
+                    <h2>Nova tarefa</h2>
                 </div>
 
-            </div>
-        </section>
+                <span id="taskmsg"></span>
+
+                <form id="taskForm">
+                    <label for="taskTitle">Titulo</label>
+                    <input type="text" id="taskTitle" placeholder="Ex: estudar backend" required />
+
+                    <label for="taskDescription">Descricao</label>
+                    <textarea id="taskDescription" placeholder="Detalhes da tarefa" rows="4"></textarea>
+
+                    <button id="submit1" type="submit">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Criar tarefa</span>
+                    </button>
+                </form>
+            </section>
+
+            <section class="section tasks-panel">
+                <div class="tasks1">
+                    <div class="section-head">
+                        <h2 id="postedtask">Tarefas</h2>
+                    </div>
+                    <button id="atualizar" type="button">
+                        <i class="fa-solid fa-rotate-right"></i>
+                        <span>Atualizar</span>
+                    </button>
+                </div>
+
+                <div id="tasksList">
+                    <p class="empty">Carregando tarefas...</p>
+                </div>
+            </section>
+        </div>
     </main>
     <script src="/dash.js"></script>
 </body>

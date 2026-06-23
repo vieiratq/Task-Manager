@@ -7,7 +7,12 @@ const level = document.getElementById("level");
 const userId = document.getElementById("userId");
 const submit = document.getElementById("submit1");
 const taskmsg = document.getElementById("taskmsg");
+const tasks = document.getElementById("tasksList");
+const atualizar = document.getElementById("atualizar");
+
 let enviando = false
+
+
 async function loadUser() {
     const response = await fetch("/api/users");
     try {
@@ -30,6 +35,7 @@ async function loadUser() {
     }
 
 }
+
 async function createTask() {
     const responseCheck = await fetch("/api/users");
     try {
@@ -61,6 +67,7 @@ async function createTask() {
     console.log(data)
 
 }
+
 submit.addEventListener("click", async (event) => {
     event.preventDefault()
     if (!taskTitle.value || !taskDesc.value) {
@@ -86,9 +93,69 @@ submit.addEventListener("click", async (event) => {
     }
     finally {
         enviando = false
-        submit.innerHTML = "Post Task"
+        submit.innerHTML = '<i class="fa-solid fa-plus"></i><span>Criar tarefa</span>'
         submit.disabled = false
+        loadTasks()
     }
 
 })
-loadUser()
+
+
+async function loadTasks() {
+    const response = await fetch("/task/get")
+    const data = await response.json()
+    const tasks = data.tasks
+    tasksList.innerHTML = ""
+    tasks.forEach(task => {
+        const taskDiv = document.createElement("div")
+        taskDiv.className = "task"
+        if (task.user_id == userId.innerText) {
+            taskDiv.innerHTML = `
+        <div class="task-title">${task.task_title}
+            <div class="task-actions">
+                <button class="task-complete">
+                    <i class="fa-solid fa-check"></i>
+                </button>
+                <button class="task-delete">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+                <button class="task-edit">
+                    <i class="fa-solid fa-pen"></i>
+                </button>
+            </div>
+        </div>
+        <div class="task-desc">${task.task_desc}</div>
+        <div class="task-meta">
+            <span class="task-user">${task.user_name}</span>
+            <span class="task-date">${new Date(task.created_at).toLocaleDateString("pt-BR")}</span>
+        </div>
+        <div class="task-id">Task #${task.task_id}</div>
+        `
+            tasksList.appendChild(taskDiv)
+        }
+        else {
+            taskDiv.innerHTML = `
+        <div class="task-title">${task.task_title}</div>
+        <div class="task-desc">${task.task_desc}</div>
+        <div class="task-meta">
+            <span class="task-user">${task.user_name}</span>
+            <span class="task-date">${new Date(task.created_at).toLocaleDateString("pt-BR")}</span>
+        </div>
+        <div class="task-id">Task #${task.task_id}</div>
+        `
+            tasksList.appendChild(taskDiv)
+        }
+
+    });
+}
+
+atualizar.addEventListener("click", () => {
+    tasksList.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>'
+    loadTasks()
+})
+
+async function init() {
+    await loadUser()
+    await loadTasks()
+}
+init()

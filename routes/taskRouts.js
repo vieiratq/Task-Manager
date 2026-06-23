@@ -26,5 +26,15 @@ router.post("/task/post", ValidaLogin, (req, res) => {
 
     })
 })
-
-module.exports = router;
+router.get("/task/get", ValidaLogin, (req, res) => {
+    db.query("SELECT * FROM tasks",(err,result)=> {
+        if(err){
+            return res.json({success:false,message:"Erro ao buscar tarefa"})
+        }
+        
+        if(result.user_name == req.session.user.name)
+            
+        return res.json({success:true,tasks:result.rows, message:"Tarefa encontrada com sucesso"})
+    })
+})
+module.exports = router
