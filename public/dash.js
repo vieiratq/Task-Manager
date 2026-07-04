@@ -9,10 +9,20 @@ const submit = document.getElementById("submit1");
 const taskmsg = document.getElementById("taskmsg");
 const tasks = document.getElementById("tasksList");
 const atualizar = document.getElementById("atualizar");
+const taskSpan = document.getElementById("taskSpan");
+//const taskDelete = document.getElementById("task-delete")
 
 let enviando = false
 
+function criarDeleteBtn(taskDiv) {
+    const deleteButton = taskDiv.querySelector(".task-delete")
+    if (deleteButton) {
+        deleteButton.addEventListener("click", async () => {
+            deletarTask(event, deleteButton.dataset.id)
 
+        })
+    }
+}
 async function loadUser() {
     const response = await fetch("/api/users");
     try {
@@ -116,7 +126,7 @@ async function loadTasks() {
                 <button class="task-complete">
                     <i class="fa-solid fa-check"></i>
                 </button>
-                <button class="task-delete">
+                <button data-id= "${task.task_id}" class="task-delete">
                     <i class="fa-solid fa-trash"></i>
                 </button>
                 <button class="task-edit">
@@ -129,8 +139,9 @@ async function loadTasks() {
             <span class="task-user">${task.user_name}</span>
             <span class="task-date">${new Date(task.created_at).toLocaleDateString("pt-BR")}</span>
         </div>
-        <div class="task-id">Task #${task.task_id}</div>
+        <div class="task-id" data-id= "${task.task_id}">Task #${task.task_id}</div>
         `
+            criarDeleteBtn(taskDiv)
             tasksList.appendChild(taskDiv)
         }
         else {
@@ -143,6 +154,8 @@ async function loadTasks() {
         </div>
         <div class="task-id">Task #${task.task_id}</div>
         `
+
+            criarDeleteBtn(taskDiv)
             tasksList.appendChild(taskDiv)
         }
 
@@ -154,8 +167,19 @@ atualizar.addEventListener("click", () => {
     loadTasks()
 })
 
+async function deletarTask(event, buttonid) {
+    event.preventDefault()
+    const response = await fetch(`/task/delete/${buttonid}`)
+    const data = await response.json()
+    taskSpan.innerHTML = data.message
+    await loadTasks()
+}
+
+
+
 async function init() {
     await loadUser()
     await loadTasks()
+
 }
 init()

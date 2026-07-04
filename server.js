@@ -8,24 +8,39 @@ const port = process.env.PORT || 3000;
 const session = require("express-session");
 const authRoutes = require("./routes/authRoutes");
 const router = require("./routes/userRoutes");
+const db = require("./routes/databaseroutes");
+const pgSession = require("connect-pg-simple")(session);
+const helmet = require("helmet")
 ////////////////////////////////////////////////////////////////////////
+app.use(helmet())
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "private")));
 app.use(express.static(path.join(__dirname, "frontend")));
+
 app.use(session({
+  store: new pgSession({
+    tableName: "sessions",
+    createTableIfMissing: true,
+    pool: db
+  }),
   secret: process.env.SESSION_SECRET,
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure: false, 
+    sameSite: "lax",
+    maxAge: 1000 * 60 * 60 * 24
+  }
 }));
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "frontend", "index.html"));
 });
 
-
 app.get("/dashboard", ValidaLogin, (req, res) => {
   res.sendFile(path.join(__dirname, "frontend", "dash.html"))
 });
-
 
 app.use(express.json());
 app.use("/", authRoutes);

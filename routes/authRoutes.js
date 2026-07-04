@@ -4,6 +4,15 @@ const path = require("path");
 const db = require("./databaseroutes");
 const router = express.Router();
 const checktamanho = require("../function/checktamanho")
+const rateLimit = require("express-rate-limit")
+const loginLimiter = rateLimit({
+  windowMs: 1000 * 60 * 60,
+  limit: 5,
+  message: {
+    success: false,
+    message: "Muitas tentativas de login. Tente novamente em 1 hora."
+  }
+})
 function ValidaLogin(req, res, next) {
   if (req.session.user)
     return next()
@@ -40,7 +49,7 @@ router.post("/register", (req, res) => {
 })
 
 
-router.post("/login", (req, res) => {
+router.post("/login", loginLimiter, (req, res) => {
   const { email, password } = req.body;
   db.query("SELECT id, username, email, password FROM users WHERE email = $1", [email],
     async (err, result) => {
