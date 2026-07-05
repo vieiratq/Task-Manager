@@ -12,7 +12,7 @@ const atualizar = document.getElementById("atualizar");
 const taskSpan = document.getElementById("taskSpan");
 const editMenu = document.querySelector(".editMenu")
 let enviando = false
-function criarEditBtn(taskDiv) {
+async function criarEditBtn(taskDiv) {
     const editButton = taskDiv.querySelector(".task-edit")
     const closeEditMenu = document.getElementById("closeEditMenu")
     const taskTitleEdit = document.getElementById("taskTitleEdit")
@@ -33,7 +33,20 @@ function criarEditBtn(taskDiv) {
              taskmsg2.innerHTML = "Preencha todos os campos"
              return
          }
+         if(taskTitleEdit.value.length < 3 || taskTitleEdit.value.length > 25){
+             taskmsg2.innerHTML = "Titulo deve conter entre 3 e 25 caracteres"
+             return
+         }
+         if(taskDescriptionEdit.value.length < 3 || taskDescriptionEdit.value.length > 200){
+            taskmsg2.innerHTML = "Descricao deve conter entre 3 e 200 caracteres"
+            return
+         }
+         if(taskTitle.value.length > 25){
+            taskmsg2.innerHTML = "Titulo deve conter entre 3 e 25 caracteres"
+            return
+            }
         })
+        const response= await fetch(`/`)
     }
 }
 function criarCompleteBtn(taskDiv) {

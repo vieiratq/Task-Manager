@@ -58,5 +58,8 @@ router.get("/task/complete/:id", ValidaLogin, (req, res) => {
         return res.json({ success: true, message: "Tarefa atualizada com sucesso" })
     })
 })
+router.get("/task/edit/:id", ValidaLogin, (req, res) => {
+    db.query
+})
 
 module.exports = router
