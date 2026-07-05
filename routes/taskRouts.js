@@ -18,8 +18,9 @@ router.post("/task/post", ValidaLogin, (req, res) => {
     if (!checktamanho(req.body.task_desc, 3, 200)) {
         return res.json({ success: false, message: "Descricao deve conter entre 3 e 200 caracteres" })
     }
-    db.query("INSERT INTO tasks (user_id,user_name,task_title,task_desc) VALUES ($1,$2,$3,$4)", [req.body.user_id, req.body.user_name, req.body.task_title, req.body.task_desc], (err, result) => {
+    db.query("INSERT INTO tasks (user_id,user_name,task_title,task_desc) VALUES ($1,$2,$3,$4)", [req.session.user.id, req.session.user.username, req.body.task_title, req.body.task_desc], (err, result) => {
         if (err) {
+            console.log(err)
             console.log(err)
             return res.json({ success: false, message: "Erro ao criar tarefa" })
         }

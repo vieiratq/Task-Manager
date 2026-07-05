@@ -49,7 +49,33 @@ body::before {
     position: relative;
     z-index: 1;
 }
+.editMenu{
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    width: min(720px, calc(100% - 32px));
+    max-height: 90vh;
+    padding: 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    position: fixed;
+    background-color: #ffffff;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 999;
+    overflow-y: auto;
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.22);
 
+
+}
+.editMenu.active{
+    display: flex;
+}
+.taskmsg2{
+    color: #b91c1c;
+    font-color: red
+}
 .topbar {
     display: flex;
     align-items: center;
@@ -60,6 +86,29 @@ body::before {
     background: var(--panel);
     border-bottom: 1px solid var(--border);
 }
+#closeEditMenu{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    width: 30px;
+    height: 30px;
+    padding: 0;
+
+    color: #ffffff;
+    background: #b91c1c;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.editMenu form {
+    padding-top: 28px;
+}
+
 
 .brand {
     display: flex;
@@ -457,6 +506,11 @@ button:disabled {
     .workspace {
         grid-template-columns: 1fr;
     }
+
+    .editMenu {
+        width: min(640px, calc(100% - 40px));
+        max-height: calc(100vh - 32px);
+    }
 }
 
 @media (max-width: 680px) {
@@ -488,5 +542,15 @@ button:disabled {
 
     #atualizar {
         width: 100%;
+    }
+
+    .editMenu {
+        width: calc(100% - 20px);
+        max-height: calc(100vh - 24px);
+        padding: 12px;
+    }
+
+    .editMenu form {
+        padding-top: 34px;
     }
 }

@@ -10,6 +10,22 @@
 </head>
 
 <body>
+    <div class="editMenu">
+        <button id="closeEditMenu">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <form action="">
+            <span id="taskmsg2"></span>
+            <label for="taskTitleEdit">Novo titulo da tarefa:</label>
+            <input type="text" id="taskTitleEdit" placeholder="Ex: estudar backend" required />
+
+            <label for="taskDescriptionEdit">Nova descricao da tarefa:</label>
+            <textarea id="taskDescriptionEdit" placeholder="Detalhes da tarefa" rows="4"></textarea>
+            <button id="submit2" type="submit">
+                <i class="fa-solid fa-pen"></i>
+                <span>Salvar</span>
+        </form>
+    </div>
     <header class="topbar">
         <div class="brand">
             <span class="brand-mark">T</span>
@@ -82,6 +98,7 @@
                 </div>
             </section>
         </div>
+
     </main>
     <script src="/dash.js"></script>
 </body>

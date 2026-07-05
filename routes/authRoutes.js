@@ -63,7 +63,7 @@ router.post("/login", loginLimiter, (req, res) => {
       if (!loginCheck)
         return res.json({ success: false, message: "Email ou senha incorreto" })
       if (loginCheck) {
-        req.session.user = { id: user.id, email: user.email, logado: true }, console.log("usuario Logado com sucesso " + email + " " + password)
+        req.session.user = { id: user.id, email: user.email, logado: true, username: user.username }, console.log("usuario Logado com sucesso " + email + " " + password)
       }
       return res.json({
         success: true,
@@ -71,7 +71,7 @@ router.post("/login", loginLimiter, (req, res) => {
         error: "1",
         id: user.id,
         email: user.email,
-        name: user.username
+        username: user.username
       })
     })
 

@@ -10,10 +10,34 @@ const taskmsg = document.getElementById("taskmsg");
 const tasks = document.getElementById("tasksList");
 const atualizar = document.getElementById("atualizar");
 const taskSpan = document.getElementById("taskSpan");
-//const taskDelete = document.getElementById("task-delete")
-
+const editMenu = document.querySelector(".editMenu")
 let enviando = false
+function criarEditBtn(taskDiv) {
+    const editButton = taskDiv.querySelector(".task-edit")
+    const closeEditMenu = document.getElementById("closeEditMenu")
+    const taskTitleEdit = document.getElementById("taskTitleEdit")
+    const taskDescriptionEdit = document.getElementById("taskDescriptionEdit")
+    const submit2 = document.getElementById("submit2")
+    const taskmsg2 = document.getElementById("taskmsg2")
+    if (editButton) {
+        editButton.addEventListener("click", async (event) => {
+            event.preventDefault()
+            editMenu.classList.add("active")
+        })
+        closeEditMenu.addEventListener("click", () => {
+            editMenu.classList.remove("active")
+        })
+        submit2.addEventListener("click", async (event) => {
+         event.preventDefault()
+         if(!taskTitleEdit.value || !taskDescriptionEdit.value){
+             taskmsg2.innerHTML = "Preencha todos os campos"
+             return
+         }
+        })
+    }
+}
 function criarCompleteBtn(taskDiv) {
+    const closeEditMenu = document.querySelector(".closeEditMenu")
     const completeButton = taskDiv.querySelector(".task-complete")
     if (completeButton) {
         completeButton.addEventListener("click", async (event) => {
@@ -81,8 +105,6 @@ async function createTask() {
             "content-type": "application/json"
         },
         body: JSON.stringify({
-            user_id: user.id,
-            user_name: user.username,
             task_title: taskTitle.value,
             task_desc: taskDesc.value
         }),
@@ -159,6 +181,7 @@ async function loadTasks() {
                          `
                 criarDeleteBtn(taskDiv)
                 criarCompleteBtn(taskDiv)
+                criarEditBtn(taskDiv)
                 tasksList.appendChild(taskDiv)
             }
             else {
@@ -177,8 +200,8 @@ async function loadTasks() {
                   </div>
                           <div class="task-id" data-id= "${task.task_id}">Task #${task.task_id}</div>
                       `
-                    criarDeleteBtn(taskDiv)
-                    tasksList.appendChild(taskDiv)
+                criarDeleteBtn(taskDiv)
+                tasksList.appendChild(taskDiv)
             }
         }
         else {
@@ -199,7 +222,7 @@ async function loadTasks() {
 }
 
 atualizar.addEventListener("click", () => {
-    tasksList.innerHTML =`
+    tasksList.innerHTML = `
     <div class="loading">
         <i class="fa-solid fa-circle-notch fa-spin"></i>
     </div>
