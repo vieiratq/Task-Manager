@@ -49,7 +49,7 @@ router.get("/task/delete/:id", ValidaLogin, (req, res) => {
 })
 
 router.get("/task/complete/:id", ValidaLogin, (req, res) => {
-    db.query("UPDATE tasks SET completed = TRUE, completed_by = $1 WHERE task_id = $2 AND user_id = $3", [req.session.user.id, req.params.id, req.session.user.id], (err) => {
+    db.query("UPDATE tasks SET completed = TRUE, completed_date = NOW(), completed_by = $1 WHERE task_id = $2 AND user_id = $3", [req.session.user.id, req.params.id, req.session.user.id], (err) => {
         if (err) {
             console.log(err)
             return res.json({ success: false, message: "erro ao atualizar tarefa" })

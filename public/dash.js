@@ -133,11 +133,12 @@ async function loadTasks() {
     tasksList.innerHTML = ""
     tasks.forEach(task => {
         const taskDiv = document.createElement("div")
-        taskDiv.className = "task"
+        taskDiv.className = task.completed ? "task completed" : "task"
         if (task.user_id == userId.innerText) {
-            taskDiv.innerHTML = `
-        <div class="task-title">${task.task_title}
-            <div class="task-actions">
+            if (task.completed == false) {
+                taskDiv.innerHTML = `
+                 <div class="task-title">${task.task_title}
+                  <div class="task-actions">
                 <button data-id=${task.task_id} class="task-complete">
                     <i class="fa-solid fa-check"></i>
                 </button>
@@ -147,18 +148,38 @@ async function loadTasks() {
                 <button class="task-edit">
                     <i class="fa-solid fa-pen"></i>
                 </button>
-            </div>
-        </div>
-        <div class="task-desc">${task.task_desc}</div>
-        <div class="task-meta">
-            <span class="task-user">${task.user_name}</span>
-            <span class="task-date">${new Date(task.created_at).toLocaleDateString("pt-BR")}</span>
-        </div>
-        <div class="task-id" data-id= "${task.task_id}">Task #${task.task_id}</div>
-        `
-            criarDeleteBtn(taskDiv)
-            criarCompleteBtn(taskDiv)
-            tasksList.appendChild(taskDiv)
+                     </div>
+                   </div>
+                               <div class="task-desc">${task.task_desc}</div>
+                       <div class="task-meta">
+                       <span class="task-user">${task.user_name}</span>
+                       <span class="task-date">${new Date(task.created_at).toLocaleDateString("pt-BR")}</span>
+                          </div>
+                          <div class="task-id" data-id= "${task.task_id}">Task #${task.task_id}</div>
+                         `
+                criarDeleteBtn(taskDiv)
+                criarCompleteBtn(taskDiv)
+                tasksList.appendChild(taskDiv)
+            }
+            else {
+                taskDiv.innerHTML = `
+                 <div class="task-title">${task.task_title}
+                  <div class="task-actions">
+                    <button data-id= "${task.task_id}" class="task-delete">
+                       <i class="fa-solid fa-trash"></i>
+                   </button>
+                  </div>
+                 </div>
+                  <div class="task-desc">${task.task_desc}</div>
+                  <div class="task-meta">
+                       <span class="task-user">${task.user_name}</span>
+                    <span class="task-date">${new Date(task.created_at).toLocaleDateString("pt-BR")}</span>
+                  </div>
+                          <div class="task-id" data-id= "${task.task_id}">Task #${task.task_id}</div>
+                      `
+                    criarDeleteBtn(taskDiv)
+                    tasksList.appendChild(taskDiv)
+            }
         }
         else {
             taskDiv.innerHTML = `
@@ -178,7 +199,11 @@ async function loadTasks() {
 }
 
 atualizar.addEventListener("click", () => {
-    tasksList.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>'
+    tasksList.innerHTML =`
+    <div class="loading">
+        <i class="fa-solid fa-circle-notch fa-spin"></i>
+    </div>
+    `
     loadTasks()
 })
 

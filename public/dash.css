@@ -67,6 +67,10 @@ body::before {
     gap: 12px;
     min-width: 0;
 }
+.task.completed {
+    background-color: #dcfce7;
+    border-color: #22c55e;
+}
 
 .brand-mark {
     display: inline-flex;
