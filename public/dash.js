@@ -13,15 +13,30 @@ const taskSpan = document.getElementById("taskSpan");
 //const taskDelete = document.getElementById("task-delete")
 
 let enviando = false
-
+function criarCompleteBtn(taskDiv) {
+    const completeButton = taskDiv.querySelector(".task-complete")
+    if (completeButton) {
+        completeButton.addEventListener("click", async (event) => {
+            if (completeButton.dataset.id) {
+                completeTask(event, completeButton.dataset.id)
+            }
+        })
+    }
+}
 function criarDeleteBtn(taskDiv) {
     const deleteButton = taskDiv.querySelector(".task-delete")
     if (deleteButton) {
-        deleteButton.addEventListener("click", async () => {
+        deleteButton.addEventListener("click", async (event) => {
             deletarTask(event, deleteButton.dataset.id)
-
         })
     }
+}
+async function completeTask(event, buttonid) {
+    event.preventDefault()
+    const responde = await fetch(`/task/complete/${buttonid}`)
+    const data = await responde.json()
+    taskSpan.innerHTML = data.message
+    await loadTasks()
 }
 async function loadUser() {
     const response = await fetch("/api/users");
@@ -123,7 +138,7 @@ async function loadTasks() {
             taskDiv.innerHTML = `
         <div class="task-title">${task.task_title}
             <div class="task-actions">
-                <button class="task-complete">
+                <button data-id=${task.task_id} class="task-complete">
                     <i class="fa-solid fa-check"></i>
                 </button>
                 <button data-id= "${task.task_id}" class="task-delete">
@@ -142,6 +157,7 @@ async function loadTasks() {
         <div class="task-id" data-id= "${task.task_id}">Task #${task.task_id}</div>
         `
             criarDeleteBtn(taskDiv)
+            criarCompleteBtn(taskDiv)
             tasksList.appendChild(taskDiv)
         }
         else {
@@ -154,7 +170,6 @@ async function loadTasks() {
         </div>
         <div class="task-id">Task #${task.task_id}</div>
         `
-
             criarDeleteBtn(taskDiv)
             tasksList.appendChild(taskDiv)
         }
