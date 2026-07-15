@@ -32,7 +32,7 @@ router.post("/task/post", ValidaLogin, (req, res) => {
 
 router.get("/task/get", ValidaLogin, (req, res) => {
 
-    db.query("SELECT * FROM tasks WHERE user_id = $1", [req.session.user.id], (err, result) => {
+    db.query("SELECT * FROM tasks WHERE user_id = $1 ORDER by created_at DESC ", [req.session.user.id], (err, result) => {
         if (err) {
             return res.json({ success: false, message: "Erro ao buscar tarefa" })
         }
@@ -40,7 +40,7 @@ router.get("/task/get", ValidaLogin, (req, res) => {
     })
 })
 
-router.get("/task/delete/:id", ValidaLogin, (req, res) => {
+router.delete("/task/:id", ValidaLogin, (req, res) => {
     db.query("DELETE FROM tasks WHERE task_id = $1 AND user_id = $2", [req.params.id, req.session.user.id], (err) => {
         if (err) {
             return res.json({ success: false, message: "erro ao excluir tarefa" })
@@ -49,7 +49,7 @@ router.get("/task/delete/:id", ValidaLogin, (req, res) => {
     })
 })
 
-router.get("/task/complete/:id", ValidaLogin, (req, res) => {
+router.patch("/task/:id/complete", ValidaLogin, (req, res) => {
     db.query("UPDATE tasks SET completed = TRUE, completed_date = NOW(), completed_by = $1 WHERE task_id = $2 AND user_id = $3", [req.session.user.id, req.params.id, req.session.user.id], (err) => {
         if (err) {
             console.log(err)
@@ -58,8 +58,23 @@ router.get("/task/complete/:id", ValidaLogin, (req, res) => {
         return res.json({ success: true, message: "Tarefa atualizada com sucesso" })
     })
 })
-router.get("/task/edit/:id", ValidaLogin, (req, res) => {
-    db.query
+router.put("/task/edit/:id", ValidaLogin, (req, res) => {
+    if (!checktamanho(req.body.task_title, 3, 25)) {
+        return res.json({ success: false, message: "Titulo deve conter entre 3 e 25 caracteres" })
+    }
+    if (!checktamanho(req.body.task_desc, 3, 200)) {
+        return res.json({ success: false, message: "Descricao deve conter entre 3 e 200 caracteres" })
+    }
+    if (req.body.task_title == "" || req.body.task_desc == "") {
+        return res.json({ success: false, message: "Titulo e descricao nao podem ser vazios" })
+    }
+    db.query("UPDATE tasks SET task_title = $1, task_desc = $2 WHERE task_id = $3 AND user_id = $4", [req.body.task_title, req.body.task_desc, req.params.id, req.session.user.id], (err) => {
+        if (err) {
+            console.log(err)
+            return res.json({ success: false, message: "erro ao atualizar tarefa" })
+        }
+        return res.json({ success: true, message: "Tarefa atualizada com sucesso" })
+    })
 })
 
 module.exports = router

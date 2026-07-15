@@ -40,7 +40,7 @@ router.post("/register", (req, res) => {
     db.query("INSERT INTO users(username,email,password) VALUES($1,$2,$3)", [req.body.username, req.body.email, passHash], (err) => {
       if (err)
         return res.json({ success: false, message: "erro ao cadastrar" })
-      return res.json({ success: true, message: "usuario cadastrado" }), console.log("usuario cadastrado com sucesso" + username + " " + email + ' ' + password)
+      return res.json({ success: true, message: "usuario cadastrado" })
     })
 
   })
@@ -63,7 +63,7 @@ router.post("/login", loginLimiter, (req, res) => {
       if (!loginCheck)
         return res.json({ success: false, message: "Email ou senha incorreto" })
       if (loginCheck) {
-        req.session.user = { id: user.id, email: user.email, logado: true, username: user.username }, console.log("usuario Logado com sucesso " + email + " " + password)
+        req.session.user = { id: user.id, email: user.email, logado: true, username: user.username }
       }
       return res.json({
         success: true,

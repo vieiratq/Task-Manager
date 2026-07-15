@@ -14,7 +14,6 @@ const helmet = require("helmet")
 ////////////////////////////////////////////////////////////////////////
 app.use(helmet())
 app.use(express.static(path.join(__dirname, "public")));
-app.use(express.static(path.join(__dirname, "private")));
 app.use(express.static(path.join(__dirname, "frontend")));
 
 app.use(session({
@@ -28,7 +27,7 @@ app.use(session({
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure: false, 
+    secure: false,
     sameSite: "lax",
     maxAge: 1000 * 60 * 60 * 24
   }
