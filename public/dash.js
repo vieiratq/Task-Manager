@@ -21,6 +21,10 @@ const taskmsg2 = document.getElementById("taskmsg2")
 let enviando = false
 let taskEditandoId = null
 
+searchInput.addEventListener("input",async () => {
+    const searchValue = searchInput.value.trim().toLowerCase()
+    await loadTasks(searchValue)
+})
 function criarIcone(className) {
     const icon = document.createElement("i")
     icon.className = className
@@ -75,7 +79,6 @@ submit2.addEventListener("click", async (event) => {
     editMenu.classList.remove("active")
     await loadTasks()
 })
-
 
 function criarCompleteBtn(taskDiv) {
     const closeEditMenu = document.querySelector(".closeEditMenu")
@@ -192,8 +195,8 @@ submit.addEventListener("click", async (event) => {
 })
 
 
-async function loadTasks() {
-    const response = await fetch("/task/get")
+async function loadTasks(search = "all") {
+    const response = await fetch(`/task/get/${search}`)
     const data = await response.json()
     const tasks = data.tasks
     tasksList.textContent = ""
@@ -308,8 +311,6 @@ async function deletarTask(event, buttonid) {
     taskSpan.textContent = data.message
     await loadTasks()
 }
-
-
 
 async function init() {
     await loadUser()

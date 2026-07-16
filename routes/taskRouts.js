@@ -30,15 +30,26 @@ router.post("/task/post", ValidaLogin, (req, res) => {
     })
 })
 
-router.get("/task/get", ValidaLogin, (req, res) => {
-
-    db.query("SELECT * FROM tasks WHERE user_id = $1 ORDER by created_at DESC ", [req.session.user.id], (err, result) => {
+router.get("/task/get/:search", ValidaLogin, (req, res) => {
+   if (req.params.search === "all") {
+     db.query("SELECT * FROM tasks WHERE user_id = $1 ORDER BY created_at DESC", [req.session.user.id], (err, result) => {
+         if (err) {
+             console.log(err)
+             return res.json({ success: false, message: "Erro ao buscar tarefas" })
+         }
+         return res.json({ success: true, tasks: result.rows })
+     })
+     return
+    }
+    db.query("SELECT * FROM tasks WHERE user_id = $1 AND (task_title ILIKE $2 OR task_desc ILIKE $2) ORDER BY created_at DESC", [req.session.user.id, `%${req.params.search}%`], (err, result) => {
         if (err) {
-            return res.json({ success: false, message: "Erro ao buscar tarefa" })
+            console.log(err)
+            return res.json({ success: false, message: "Erro ao buscar tarefas" })
         }
-        return res.json({ success: true, tasks: result.rows, message: "Tarefa encontrada com sucesso" })
+        return res.json({ success: true, tasks: result.rows })
     })
 })
+
 
 router.delete("/task/:id", ValidaLogin, (req, res) => {
     db.query("DELETE FROM tasks WHERE task_id = $1 AND user_id = $2", [req.params.id, req.session.user.id], (err) => {
