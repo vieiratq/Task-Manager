@@ -93,7 +93,14 @@
                         <span>Atualizar</span>
                     </button>
                 </div>
-
+                <div class="searchDiv">
+                    <input type="search" id="searchInput" placeholder="pesquisar tarefa">
+                    <select name="status" id="status">
+                        <option value="all">Todos</option>
+                        <option value="pendentes">Pendentes</option>
+                        <option value="concluidas">Concluidas</option>
+                    </select>
+                </div>
                 <div id="tasksList">
                     <p class="empty">Carregando tarefas...</p>
                 </div>

@@ -11,6 +11,13 @@ const tasks = document.getElementById("tasksList");
 const atualizar = document.getElementById("atualizar");
 const taskSpan = document.getElementById("taskSpan");
 const editMenu = document.querySelector(".editMenu")
+const searchInput = document.getElementById("searchInput")
+const status = document.getElementById("status")
+const closeEditMenu = document.getElementById("closeEditMenu")
+const taskTitleEdit = document.getElementById("taskTitleEdit")
+const taskDescriptionEdit = document.getElementById("taskDescriptionEdit")
+const submit2 = document.getElementById("submit2")
+const taskmsg2 = document.getElementById("taskmsg2")
 let enviando = false
 let taskEditandoId = null
 
@@ -34,11 +41,6 @@ async function criarEditBtn(taskDiv) {
         })
     }
 }
-const closeEditMenu = document.getElementById("closeEditMenu")
-const taskTitleEdit = document.getElementById("taskTitleEdit")
-const taskDescriptionEdit = document.getElementById("taskDescriptionEdit")
-const submit2 = document.getElementById("submit2")
-const taskmsg2 = document.getElementById("taskmsg2")
 
 submit2.addEventListener("click", async (event) => {
     event.preventDefault()
